@@ -8,11 +8,11 @@ public class HotelReservationSystem {
         Scanner sc = new Scanner(System.in);
         int choice;
 
-        System.out.println(" _   _       _       _  ____                               _   _             ");
-        System.out.println("| | | |     | |     | | | _ \\                             | | (_)            ");
-        System.out.println("| |_| | _ | |_ __| | | |_/ /__  _  _ _ __   __| | _  _  _ __  ");
-        System.out.println("|  _  |/ _ \\| _/ _ \\ | |    // _ \\/ __|/ _ \\ '__\\ \\ / / _` | __| |/ _ \\| ' \\ ");
-        System.out.println("| | | | () | ||  __/ | | |\\ \\  __/\\_ \\  _/ |   \\ V / (_| | |_| | () | | | |");
+        System.out.println(" _   _       _       _  ______                               _   _             ");
+        System.out.println("| | | |     | |     | | | ___ \\                             | | (_)            ");
+        System.out.println("| |_| | ___ | |_ ___| | | |_/ /___  ___  ___ _ ____   ____ _| |_ _  ___  _ __  ");
+        System.out.println("|  _  |/ _ \\| __/ _ \\ | |    // _ \\/ __|/ _ \\ '__\\ \\ / / _` | __| |/ _ \\| '_ \\ ");
+        System.out.println("| | | | (_) | ||  __/ | | |\\ \\  __/\\__ \\  __/ |   \\ V / (_| | |_| | (_) | | | |");
         System.out.println("\\_| |_/\\___/ \\__\\___|_| \\_| \\_\\___||___/\\___|_|    \\_/ \\__,_|\\__|_|\\___/|_| |_|");
 
         System.out.println("\n\n\t\t\t\t 1. Create Hotel");
