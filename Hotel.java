@@ -28,6 +28,7 @@ public class Hotel {
     }
 
     // public boolean addRoom(Room room);
+    
     // public boolean removeRoom (Room room);
 
     public Room findRoom(String roomName) {

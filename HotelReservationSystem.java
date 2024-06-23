@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 public class HotelReservationSystem {
     private ArrayList<Hotel> hotelList;
@@ -10,6 +9,10 @@ public class HotelReservationSystem {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int choice;
+        String name;
+        String prefix;
+        int amount;
+        boolean checkDupli;
 
         System.out.println(" _   _       _       _  ______                               _   _             ");
         System.out.println("| | | |     | |     | | | ___ \\                             | | (_)            ");
@@ -31,14 +34,42 @@ public class HotelReservationSystem {
 
         switch(choice){
             case 1:
+            do{
+            System.out.println("--------------------------------------------------------------------------------");
+            System.out.print("\nEnter a name for your Hotel: ");
+            name = sc.nextLine();
+            } while (true);
+            // check if name is already used
+
+            System.out.print("\nEnter a prefix for the rooms in the Hotel: ");
+            prefix = sc.nextLine();
+            do{
+            System.out.print("\nEnter the amount of rooms the Hotel will start with: ");
+            amount = sc.nextInt();
+            if (amount > 50 || amount < 1) {
+                System.out.println("[!][!] Enter a valid Room amount [!][!]");
+            }
+            } while (amount > 50 || amount < 1);
+
             break;
             case 2:
+            System.out.println("--------------------------------------------------------------------------------");
+            // print hotel names
+            System.out.print("\nSelect a Hotel you would like to view: ");
             break;
             case 3:
+            System.out.println("--------------------------------------------------------------------------------");
+            // print hotel names
+            System.out.print("\nSelect a Hotel you would like to manage: ");
             break;
             case 4:
+            System.out.println("--------------------------------------------------------------------------------");
+            // print hotel names
+            System.out.print("\nSelect a Hotel you would like to get a reservation in: ");
             break;
             case 5:
+            System.out.println("--------------------------------------------------------------------------------");
+            System.out.println("Exiting System... Goodbye!");
             break;
             default:
             System.out.println("Invalid Selection. Please Try Again.");
