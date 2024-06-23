@@ -6,13 +6,44 @@ public class HotelReservationSystem {
     public HotelReservationSystem() {
         hotelList = new ArrayList<Hotel>();
     }
+
+    public String getHotelName(int index) {
+        return hotelList.get(index).getHotelName();
+    }
+
+    public int getHotelAmount() {
+        return hotelList.size();
+    }
+
+    public String getHotelPrefix(int index) {
+        return hotelList.get(index).getHotelPrefix();
+    }
+
+    public void displayHotels() {
+        for (int i = 0; i < hotelList.size(); i++) {
+            System.out.println((i+1)+ " Hotel Name: " + hotelList.get(i).getHotelName());
+        }
+    }
+
+    public void addHotel(Hotel hotel) {
+        hotelList.add(hotel);
+    }
+
+    public void highLevelInformation(int index) {
+        
+    }
+
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int choice;
+        int choice, choice3;
+        String choice2;
         String name;
         String prefix;
         int amount;
-        boolean checkDupli;
+        boolean checkDuplicate;
+        Hotel tempHotel;
+        HotelReservationSystem hrs = new HotelReservationSystem();
 
         System.out.println(" _   _       _       _  ______                               _   _             ");
         System.out.println("| | | |     | |     | | | ___ \\                             | | (_)            ");
@@ -34,28 +65,58 @@ public class HotelReservationSystem {
 
         switch(choice){
             case 1:
-            do{
             System.out.println("--------------------------------------------------------------------------------");
+
+            do{
+            checkDuplicate = false;
             System.out.print("\nEnter a name for your Hotel: ");
             name = sc.nextLine();
-            } while (true);
-            // check if name is already used
+            
+            for(int i = 0; i < hrs.getHotelAmount(); i++) {
+                if(hrs.getHotelName(i).equalsIgnoreCase(name)) {
+                    checkDuplicate = true;
+                    System.out.println("[!][!] Name is already taken [!][!]");
+                }
+            }
+            } while (checkDuplicate);
 
+            do{
+            checkDuplicate = false;
             System.out.print("\nEnter a prefix for the rooms in the Hotel: ");
             prefix = sc.nextLine();
+            
+            for(int i = 0; i < hrs.getHotelAmount(); i++) {
+                if(hrs.getHotelPrefix(i).equalsIgnoreCase(prefix)) {
+                    checkDuplicate = true;
+                    System.out.println("[!][!] Name is already taken [!][!]");
+                }
+            }
+            } while (checkDuplicate);
+
             do{
             System.out.print("\nEnter the amount of rooms the Hotel will start with: ");
             amount = sc.nextInt();
             if (amount > 50 || amount < 1) {
-                System.out.println("[!][!] Enter a valid Room amount [!][!]");
+                System.out.println("[!][!] Enter a valid room amount [!][!]");
             }
             } while (amount > 50 || amount < 1);
 
+            System.out.print("\nWould you like to change the room's price per night from 1299.00? Y/N: ");
+            choice2 = sc.nextLine(); // should we ask if they want to change price cause it says "which is set to a default of 1,299.0."
+
+            tempHotel = new Hotel(name, amount, prefix);
+            hrs.addHotel(tempHotel);
             break;
+
+
             case 2:
             System.out.println("--------------------------------------------------------------------------------");
-            // print hotel names
+            hrs.displayHotels();
             System.out.print("\nSelect a Hotel you would like to view: ");
+            choice3 = sc.nextInt();
+            
+
+
             break;
             case 3:
             System.out.println("--------------------------------------------------------------------------------");

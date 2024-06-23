@@ -6,6 +6,4 @@ public class Reservation {
     private Date checkInDate;
     private Date checkOutDate;
     private Room roomBooked;
-
-    
 }
