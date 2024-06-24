@@ -1,25 +1,27 @@
 import java.util.*; //for arraylist
-import java.lang.*; //for string
-import java.lang.reflect.Array;
 
 public class Hotel {
     private String hotelName;
     private ArrayList<Room> roomList;
-    private ArrayList<Reservation> reservationList; //honestly not sure if we need this
     private String roomPrefix;
     private int roomAmount;
     private double roomPricePerNight = 1299.00;
 
-    private Hotel() {
-        //private constructor to prevent instantiation w/o initialization
-    }
-
     public Hotel(String hotelName, int roomAmount, String prefix) {
         this.hotelName = hotelName;
         roomList = new ArrayList<Room>();
-        reservationList = new ArrayList<Reservation>();
         this.roomAmount = roomAmount;
         this.roomPrefix = prefix;
+        createRooms();
+    }
+
+    public Hotel(String hotelName, int roomAmount, String prefix,double price) {
+        this.hotelName = hotelName;
+        roomList = new ArrayList<Room>();
+        this.roomAmount = roomAmount;
+        this.roomPrefix = prefix;
+        this.roomPricePerNight = price;
+        createRooms();
     }
 
     //getter
@@ -36,8 +38,40 @@ public class Hotel {
         return this.roomList;
     }
 
-    // public boolean addRoom(Room room);
-    // public boolean removeRoom (Room room);
+    public void createRooms() {
+        for (int i = 1; i <= roomAmount; i++) {
+            Room tempRoom = new Room(roomPrefix + i, roomPricePerNight);
+            roomList.add(tempRoom);
+        }
+    }
+
+    public int countEmptyRooms() {
+        int ctr = 0;
+        for (int i = 0; i < roomAmount; i++) {
+            if (roomList.get(i).isRoomEmpty() == true){
+                ctr++;
+            }
+        }
+        return ctr;
+    }
+
+    public void addRooms(int amount) {
+        for (int i = 0; i < amount; i++) {
+            Room tempRoom = new Room(roomPrefix + (roomAmount + i), roomPricePerNight);
+            roomList.add(tempRoom);
+            roomAmount++;
+        }
+    }
+
+    public void removeRooms(int amount) {
+        int ctr = 0;
+        for (int i = roomAmount-1; i >= 0 && ctr < amount; i--) {
+            if(roomList.get(i).isRoomEmpty()) {
+                roomList.remove(i);
+                ctr++;
+            }
+        }
+    }
 
     public Room findRoom(String roomName) {
         for (Room room : roomList) {
@@ -52,20 +86,36 @@ public class Hotel {
         return roomAmount;
     }
 
-    //reservation management methods - note to add a confirmation of some sorts to confirm action
-    public ArrayList<Reservation> getReservationList() {
-        return this.reservationList;
+    public Room getRoom(int index) {
+        return roomList.get(index);
     }
 
-    // public boolean addReservation(Reservation reservation); //might change to boolean
-    // public boolean removeReservation(Reservation reservation);
-
-    //other methods
-    private void setHotelName(String hotelName) {
+    public void setHotelName(String hotelName) {
         this.hotelName = hotelName;
     }
 
-    public void changeHotelName(String hotelName) {
-        //
+    public Boolean isHotelEmpty() {
+        for (int i = 0; i < roomAmount; i++) {
+            if (roomList.get(i).isRoomEmpty() == false){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void setRoomPricePerNight(double amount) {
+        this.roomPricePerNight = amount;
+        for (int i = 0; i < roomAmount; i++) {
+            roomList.get(i).setRoomPrice(amount);
+        }
+    }
+
+    public int AvailableRoom(Date checkInDate, Date checkOutDate) {
+        for (int i = 0; i < roomAmount; i++) {
+            if(roomList.get(i).checkRoomAvailability(checkInDate, checkOutDate)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
