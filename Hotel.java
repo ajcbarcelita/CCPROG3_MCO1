@@ -69,6 +69,7 @@ public class Hotel {
             if(roomList.get(i).isRoomEmpty()) {
                 roomList.remove(i);
                 ctr++;
+                roomAmount--;
             }
         }
     }
@@ -110,12 +111,21 @@ public class Hotel {
         }
     }
 
-    public int AvailableRoom(Date checkInDate, Date checkOutDate) {
+    public int AvailableRoomIndex(Date checkInDate, Date checkOutDate) {
         for (int i = 0; i < roomAmount; i++) {
             if(roomList.get(i).checkRoomAvailability(checkInDate, checkOutDate)) {
                 return i;
             }
         }
         return -1;
+    }
+
+    public double getEstimatedEarnings() {
+        double total = 0;
+        for (Room room : roomList) {
+            total += room.getEstimatedEarnings();
+        }
+
+        return total;
     }
 }
