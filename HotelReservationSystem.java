@@ -72,7 +72,7 @@ public class HotelReservationSystem {
      * @see Hotel#Hotel(String, int, String, double)
      * @see #addHotel(Hotel) 
      */
-    private void createHotel() // encapsulated 
+    private void createHotel() 
     {
         String choice;
         String name;
@@ -127,7 +127,7 @@ public class HotelReservationSystem {
 
             do{
                 System.out.print("Would you like to change the room's price per night from 1299.00? Yes or No: ");
-                choice = sc.nextLine(); // should we ask if they want to change price cause it says "which is set to a default of 1,299.0."
+                choice = sc.nextLine();
                 if (choice.equalsIgnoreCase("yes")) {
                     do{
                     System.out.print("Enter the new price per night of a room: ");
@@ -176,7 +176,7 @@ public class HotelReservationSystem {
      * @see Hotel#lowLevelRoomInformation()
      * @see Hotel#lowLevelReservationDetails() 
      */
-    private void viewHotel() // viewing  
+    private void viewHotel()
     {
         int choiceHotel = 0, choiceOption = 0;
         System.out.println("--------------------------------------------------------------------------------");
@@ -252,7 +252,7 @@ public class HotelReservationSystem {
      * @see Hotel#changePricePerNight()
      * @see Hotel#removeReservation() 
      */ 
-    private void manageHotel() //test each again as they have their own methods
+    private void manageHotel()
     {
         String name;
         int choiceHotel = 0, choiceOption = 0;
@@ -363,7 +363,7 @@ public class HotelReservationSystem {
      * 
      * @param hotelIndex the index of the hotel to display information for
      */
-    private void highLevelInformation(int hotelIndex) // display
+    private void highLevelInformation(int hotelIndex)
     {
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("\t Hotel Name: " + getHotel(hotelIndex).getHotelName());
@@ -456,11 +456,11 @@ public class HotelReservationSystem {
             }
 
             switch(choice){
-                case 1:
+                case 1: // create
                     hrs.createHotel();
                 break;
 
-                case 2:
+                case 2: // view
                     if (hrs.getHotelAmount() > 0){
                         hrs.viewHotel();
                     }
@@ -469,7 +469,7 @@ public class HotelReservationSystem {
                     }
                 break;
 
-                case 3:
+                case 3: // manage
                     if (hrs.getHotelAmount() > 0){
                         hrs.manageHotel();
                     }
@@ -478,7 +478,7 @@ public class HotelReservationSystem {
                     }
                 break;
 
-                case 4:
+                case 4: // reserve
                 if (hrs.getHotelAmount() > 0){
                     hrs.createReservation();
                 }
@@ -487,10 +487,10 @@ public class HotelReservationSystem {
                 }
                 break;
 
-            case 5:
-            System.out.println("--------------------------------------------------------------------------------");
-            System.out.println("Exiting System... Goodbye!");
-            break;
+                case 5: // exit
+                    System.out.println("--------------------------------------------------------------------------------");
+                    System.out.println("Exiting System... Goodbye!");
+                break;
 
             default:
             System.out.println("Invalid Selection. Please Try Again.");

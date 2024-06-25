@@ -104,18 +104,15 @@ public class Room {
      * @return true if the room is available, false otherwise
      */
     public Boolean checkRoomAvailability(int checkInDate, int checkOutDate) {
-        Boolean returns = true;
-        for (int i = checkInDate; i < checkOutDate - 1; i++) {
-            if (status[checkInDate-1] != "X") {
-                if (status[checkInDate] == "X") {
-                    returns = true;
-                }
-            }
+        if (status[checkInDate-1] != "X") {
+            return false;
+        }
+        for (int i = checkInDate; i < checkOutDate; i++) {
             if (status[i] != "X") {
-                returns = false;
+                return false;
             }
         }
-        return returns;
+        return true;
     }
 
     /**

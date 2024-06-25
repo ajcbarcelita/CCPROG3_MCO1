@@ -146,35 +146,39 @@ public class Hotel {
      */
     public void addRooms() {
         int amount = 0;
-        do{
-            System.out.print("Enter the amount of rooms to add to the Hotel: ");
-            if (sc.hasNextInt()) {
-                amount = sc.nextInt();
-                sc.nextLine();
-            } else {
-                System.out.println("Invalid input. Please enter a valid number.");
-                sc.next(); // discard invalid input
-                continue; // skip to the next iteration
-            }
-            if (amount > 50 || amount < 1 || amount+roomAmount > 50) {
-                System.out.println("[!][!] Too many rooms [!][!]");
-            }
-        } while (roomAmount + amount > 50);
-
-        System.out.print("Type yes if you wish to continue, anything else to abort: ");
-            if ("yes".equalsIgnoreCase(sc.nextLine())){
-                for (int i = 0; i < amount; i++) {
-                    Room tempRoom = new Room(roomPrefix + (roomAmount + i), roomPricePerNight);
-                    roomList.add(tempRoom);
-                    roomAmount++;
+        if (roomAmount == 50) {
+            System.out.println("Max Room Amount Reached.");
+        }
+        else{
+            do{
+                System.out.print("Enter the amount of rooms to add to the Hotel: ");
+                if (sc.hasNextInt()) {
+                    amount = sc.nextInt();
+                    sc.nextLine();
+                } else {
+                    System.out.println("Invalid input. Please enter a valid number.");
+                    sc.next(); // discard invalid input
+                    continue; // skip to the next iteration
                 }
-                System.out.println("Rooms have been added.");
-            }
+                if (amount > 50 || amount < 1 || amount+roomAmount > 50) {
+                    System.out.println("[!][!] Too many rooms [!][!]");
+                }
+            } while (roomAmount + amount > 50);
 
-            else{
-                System.out.println("Adding of rooms has been aborted.");
-            }
-        
+            System.out.print("Type yes if you wish to continue, anything else to abort: ");
+                if ("yes".equalsIgnoreCase(sc.nextLine())){
+                    for (int i = 0; i < amount; i++) {
+                        Room tempRoom = new Room(roomPrefix + (roomAmount + i), roomPricePerNight);
+                        roomList.add(tempRoom);
+                        roomAmount++;
+                    }
+                    System.out.println("Rooms have been added.");
+                }
+
+                else{
+                    System.out.println("Adding of rooms has been aborted.");
+                }
+        }
     }
 
     /**
@@ -203,7 +207,7 @@ public class Hotel {
                 if (amount > countEmptyRooms() || amount < 1 || countEmptyRooms()-amount<1) {
                     System.out.println("[!][!] Enter a valid room amount [!][!]");
                 }
-            } while (getRoomAmount() - amount < 1);
+            } while (amount > countEmptyRooms() || amount < 1 || countEmptyRooms()-amount<1);
 
             System.out.print("Type yes if you wish to continue, anything else to abort: ");
             if ("yes".equalsIgnoreCase(sc.nextLine())){
@@ -382,7 +386,7 @@ public class Hotel {
      * It then finds an available room for the given dates and creates a new reservation for that room.
      */ 
     public void createReservation() {
-        int checkInDate, checkOutDate;
+        int checkInDate = 0, checkOutDate = 0;
         int roomIndex = 0;
         String name;
         Room roomBooked;
@@ -393,21 +397,32 @@ public class Hotel {
             do{
                 do {
                     System.out.print("Enter your check-in date: ");
-                    checkInDate = sc.nextInt();
-                    sc.nextLine();
+                    if (sc.hasNextInt()) {
+                        checkInDate = sc.nextInt();
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid number.");
+                        sc.next(); // discard invalid input
+                        continue; // skip to the next iteration
+                    }
                 } while (checkInDate < 1 || checkInDate >= 31 );
+                
                 do {
                     System.out.print("Enter your check-out date: ");
-                    checkOutDate = sc.nextInt();
-                    sc.nextLine();
-                } while (checkOutDate <= 1 || checkOutDate > 31);
+                    if (sc.hasNextInt()) {
+                        checkOutDate = sc.nextInt();
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid number.");
+                        sc.next(); // discard invalid input
+                        continue; // skip to the next iteration
+                    }
+                } while (checkOutDate <= 1 || checkOutDate > 31 || roomIndex == -1);
 
                 roomIndex = AvailableRoomIndex(checkInDate, checkOutDate);
 
             } while ((checkInDate > checkOutDate) || roomIndex == -1);
             
-            roomIndex = AvailableRoomIndex(checkInDate, checkOutDate);
-
             if(roomIndex == -1) {
                 System.out.println("No available rooms for the selected dates.");
             }
@@ -559,6 +574,4 @@ public class Hotel {
         }
         return 0;
     }
-
-    
 }
