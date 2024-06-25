@@ -104,7 +104,7 @@ public class Hotel {
                     sc.next(); // discard invalid input
                     continue; // skip to the next iteration
                 }
-                if (amount > countEmptyRooms() || amount < 1 || amount-countEmptyRooms()<1) {
+                if (amount > countEmptyRooms() || amount < 1 || countEmptyRooms()-amount<1) {
                     System.out.println("[!][!] Enter a valid room amount [!][!]");
                 }
             } while (getRoomAmount() - amount < 1);
