@@ -47,14 +47,30 @@ public class HotelReservationSystem {
      * 
      * @param hotel the hotel to add
      */
-    public void addHotel(Hotel hotel) {
+    private void addHotel(Hotel hotel) {
         hotelList.add(hotel);
     }
 
     /**
+     * Creates a new hotel in the system.
      * 
+     * This method prompts the user to enter the necessary information to create a new hotel, including:
+     * <ul>
+     * <li>Hotel name</li>
+     * <li>Room prefix</li>
+     * <li>Initial room amount (between 1 and 50)</li>
+     * <li>Optional: custom room price per night (at least 100.00)</li>
+     * </ul>
+     * 
+     * The method checks for duplicate hotel names and prefixes, and ensures that the user enters valid input for each field.
+     * 
+     * Once the user has entered all the necessary information, a new Hotel object is created and added to the system.
+     *
+     * @see Hotel#Hotel(String, int, String)
+     * @see Hotel#Hotel(String, int, String, double)
+     * @see #addHotel(Hotel) 
      */
-    public void createHotel() // encapsulated 
+    private void createHotel() // encapsulated 
     {
         String choice;
         String name;
@@ -136,7 +152,29 @@ public class HotelReservationSystem {
             addHotel(tempHotel);
     }
     
-    public void viewHotel() // viewing  
+    /**
+     * Views information about a hotel in the system.
+     * 
+     * This method allows the user to select a hotel to view and then choose the type of information to display.
+     * 
+     * The user is first prompted to select a hotel from the list of available hotels. Then, they are presented with a menu to choose the type of information to view, which includes:
+     * 
+     * <ul>
+     * <li>High-level information (hotel name, room amount, earnings for the month)</li>
+     * <li>Low-level room availability</li>
+     * <li>Specific room information</li>
+     * <li>Specific reservation details</li>
+     * </ul>
+     * 
+     * The method uses a do-while loop to repeatedly prompt the user for input until they choose a valid option.
+     * 
+     * @see #displayHotels()
+     * @see #highLevelInformation(int)
+     * @see Hotel#lowLevelRoomAvailability()
+     * @see Hotel#lowLevelRoomInformation()
+     * @see Hotel#lowLevelReservationDetails() 
+     */
+    private void viewHotel() // viewing  
     {
         int choiceHotel = 0, choiceOption = 0;
         System.out.println("--------------------------------------------------------------------------------");
@@ -190,7 +228,29 @@ public class HotelReservationSystem {
         } while (choiceOption < 1 || choiceOption > 4);
     }
     
-    public void manageHotel() //test each again as they have their own methods
+    /**
+     * Manages a hotel in the system.
+     * 
+     * This method allows the user to select a hotel to manage and then perform various operations on it, such as:
+     * <ul>
+     * <li>Renaming the hotel</li>
+     * <li>Adding rooms to the hotel</li>
+     * <li>Removing empty rooms from the hotel</li>
+     * <li>Updating the base price of the rooms in the hotel</li>
+     * <li>Removing a reservation from the hotel</li>
+     * <li>Removing the hotel from the system</li>
+     * </ul>
+     * 
+     * The method uses a do-while loop to repeatedly prompt the user for input until they choose a valid option.
+     * 
+     * @see #displayHotels()
+     * @see Hotel#setHotelName(String)
+     * @see Hotel#addRooms()
+     * @see Hotel#removeRooms()
+     * @see Hotel#changePricePerNight()
+     * @see Hotel#removeReservation() 
+     */ 
+    private void manageHotel() //test each again as they have their own methods
     {
         String name;
         int choiceHotel = 0, choiceOption = 0;
@@ -267,6 +327,7 @@ public class HotelReservationSystem {
                             case 4: // change PricePerNight
                             getHotel(choiceHotel-1).changePricePerNight();
                             break;
+
                             case 5: // remove reservation
                             getHotel(choiceHotel-1).removeReservation();
                             break; // come back to after making reservations
@@ -295,7 +356,12 @@ public class HotelReservationSystem {
 
     }
     
-    public void highLevelInformation(int hotelIndex) // display
+    /**
+     * Displays high-level information about a Hotel, including its name, Room amount, and Estimated Earnings for the Month.
+     * 
+     * @param hotelIndex the index of the hotel to display information for
+     */
+    private void highLevelInformation(int hotelIndex) // display
     {
         System.out.println("--------------------------------------------------------------------------------");
         System.out.println("\t Hotel Name: " + getHotel(hotelIndex).getHotelName());
@@ -306,7 +372,12 @@ public class HotelReservationSystem {
         sc.nextLine();
     }
 
-    public void createReservation() {
+    /**
+     * Collects data needed to create a reservation and passes it to another method named createReservation under the Hotel Class.
+     * 
+     * Link to method createReservation {@link Hotel#createReservation()}
+     */
+    private void createReservation() {
         if (getHotelAmount() > 0){
             int choiceHotel = 0;
 
@@ -333,7 +404,23 @@ public class HotelReservationSystem {
         }
     }
 
-
+    /**
+     * The main entry point of the Hotel Reservation System application.
+     * 
+     * This method creates a new instance of the {@link HotelReservationSystem} class and a {@link Scanner} object to read user input.
+     * It then displays a menu to the user, allowing them to select one of the following options:
+     * <ul>
+     * <li>Create a new hotel</li>
+     * <li>View existing hotels</li>
+     * <li>Manage an existing hotel</li>
+     * <li>Simulate a booking</li>
+     * <li>Exit the system</li>
+     * </ul>
+     * 
+     * The method uses a do-while loop to repeatedly prompt the user for input until they choose to exit the system.
+     * 
+     * @param args the command-line arguments (not used in this implementation)
+     */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int choice = 0;
