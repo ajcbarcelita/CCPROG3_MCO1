@@ -78,10 +78,14 @@ public class Room {
     public String createReservation(String guestName, int checkInDate, int checkOutDate, Room roomBooked) {
         int idNum = rd.nextInt(9000) + 1000;
         String reservationID = (roomBooked.getRoomName() + idNum);
-        Reservation tempRes = new Reservation(guestName, checkInDate, checkOutDate, roomBooked, reservationID);
-        tempRes.setRoomStatus();
-        reservationList.add(tempRes);
-        return reservationID;
+        
+        if (checkInDate < checkOutDate) {
+            Reservation tempRes = new Reservation(guestName, checkInDate, checkOutDate, roomBooked, reservationID);
+            tempRes.setRoomStatus();
+            reservationList.add(tempRes);
+            return reservationID;
+        }
+        else {return null;}
     }
 
     public double getEstimatedEarnings() {
@@ -94,7 +98,7 @@ public class Room {
 
     public void displayReservations() {
         for (int i = 0; i < reservationList.size(); i++) {
-            System.out.println((i+1)+ " Reservation ID: " + reservationList.get(i).getReservationID());
+            System.out.println("Reservation ID: " + reservationList.get(i).getReservationID() +" Guest: " + reservationList.get(i).getGuestName());
         }
     }
 
@@ -124,5 +128,10 @@ public class Room {
 
     public void removeReservation(String reservationID) {
         reservationList.remove(findRes(reservationID));
+        for(int i = 0; i< 31; i++) {
+            if (status[i].equals(reservationID)) {
+                status[i] = "X";
+            }
+        }
     }
 }
