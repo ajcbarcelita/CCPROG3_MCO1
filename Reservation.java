@@ -57,12 +57,12 @@ public class Reservation {
     }
 
     public void displayReservationDetails() {
-        System.out.println("Reservation ID: " + reservationID);
-        System.out.println("Guest Name: " + guestName);
-        System.out.println("Room Name: " + roomBooked.getRoomName());
-        System.out.println("Check-in: "+ checkInDate +" Check-out: "+ checkOutDate);
-        System.out.println("Total Price of Booking: "+ totalPrice);
-        System.out.println("Price per Night: "+ roomBooked.getRoomPrice());
-        System.out.println("Nights Stayed: "+ (checkOutDate-checkInDate));
+        System.out.println("\tReservation ID: " + reservationID);
+        System.out.println("\tGuest Name: " + guestName);
+        System.out.println("\tRoom Name: " + roomBooked.getRoomName());
+        System.out.println("\tCheck-in: "+ checkInDate +" Check-out: "+ checkOutDate);
+        System.out.println("\tTotal Price of Booking: "+ totalPrice);
+        System.out.println("\tPrice per Night: "+ roomBooked.getRoomPrice());
+        System.out.println("\tNights Stayed: "+ (checkOutDate-checkInDate));
     }
 }

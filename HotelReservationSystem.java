@@ -1,38 +1,66 @@
 import java.util.*;
 
+/**
+ * HotelReservationSystem is a class that manages an arraylist of hotels and provides methods for creating, viewing, managing hotels and creating reservations.
+ */
 public class HotelReservationSystem {
     Scanner sc = new Scanner(System.in);
     private ArrayList<Hotel> hotelList;
 
+    /**
+     * Constructor for the Hotel Reservation System.
+     */
     public HotelReservationSystem() {
         hotelList = new ArrayList<Hotel>();
     }
 
+    /**
+     * Returns the Hotel at the given index.
+     * 
+     * @param index the index of the hotel to return
+     * @return Hotel at the given index
+     */
     public Hotel getHotel (int index) {
         return hotelList.get(index);
     }
 
+    /**
+     * Returns the amount of Hotels present in the Reservation System
+     * 
+     * @return number of Hotels/size of hotelList arrayList
+     */
     public int getHotelAmount() {
         return hotelList.size();
     }
 
+    /**
+     * Prints out the names of each Hotel in the Reservation System along with a corresponding index.
+     */
     public void displayHotels() {
         for (int i = 0; i < hotelList.size(); i++) {
-            System.out.println((i+1)+ " Hotel Name: " + getHotel(i).getHotelName());
+            System.out.println("\t"+(i+1)+ " Hotel Name: " + getHotel(i).getHotelName());
         }
     }
 
+    /**
+     * Adds a new Hotel into the Reservation System.
+     * 
+     * @param hotel the hotel to add
+     */
     public void addHotel(Hotel hotel) {
         hotelList.add(hotel);
     }
 
-    public void createHotel() // encapped 
+    /**
+     * 
+     */
+    public void createHotel() // encapsulated 
     {
         String choice;
         String name;
         String prefix;
         int amount = 0;
-        double price;
+        double price = 0;
         boolean checkDuplicate = false;
         Hotel tempHotel;
         System.out.println("--------------------------------------------------------------------------------");
@@ -85,7 +113,15 @@ public class HotelReservationSystem {
                 if (choice.equalsIgnoreCase("yes")) {
                     do{
                     System.out.print("Enter the new price per night of a room: ");
-                    price = sc.nextDouble();
+                        if (sc.hasNextDouble()) {
+                            price = sc.nextDouble();
+                            sc.nextLine();
+                        } else {
+                            System.out.println("Invalid input. Please enter a valid number.");
+                            sc.next(); // discard invalid input
+                            continue; // skip to the next iteration
+                        }
+
                     if (price < 100) {
                         System.out.println("[!][!] Enter a valid price (at least 100.00) [!][!]");
                     }

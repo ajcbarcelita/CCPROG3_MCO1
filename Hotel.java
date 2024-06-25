@@ -68,7 +68,7 @@ public class Hotel {
                 continue; // skip to the next iteration
             }
             if (amount > 50 || amount < 1 || amount+roomAmount > 50) {
-                System.out.println("[!][!] Enter a valid room amount [!][!]");
+                System.out.println("[!][!] Too many rooms [!][!]");
             }
         } while (roomAmount + amount > 50);
 
@@ -90,7 +90,7 @@ public class Hotel {
 
     public void removeRooms() {
         int amount = 0, ctr = 0;
-        if (countEmptyRooms() == roomAmount) {
+        if (countEmptyRooms() == 0) {
             System.out.println("There are no EMPTY rooms to remove.");
         }
         else {
@@ -158,6 +158,9 @@ public class Hotel {
         else{
             System.out.println("Hotel is not empty.");
         }
+
+        System.out.println("Press Enter to continue");
+        sc.nextLine();
     }
 
     public void removeReservation() {
@@ -238,12 +241,12 @@ public class Hotel {
             System.out.println("--------------------------------------------------------------------------------");
             getRoom(findRes(resID)).getReservationList().get(getRoom(findRes(resID)).findRes(resID)).displayReservationDetails();
             System.out.println("--------------------------------------------------------------------------------");
-            System.out.println("Press Enter to continue");
-            sc.nextLine();
         }
         else {
             System.out.println("There are no reservations to view");
         }
+        System.out.println("Press Enter to continue");
+        sc.nextLine();
     }
 
     public void createReservation() {
@@ -363,7 +366,7 @@ public class Hotel {
 
     public void displayRooms() {
         for (Room room : roomList) {
-            System.out.println("Room Number: " + room.getRoomName());            
+            System.out.println("\tRoom Number: " + room.getRoomName());            
         }
     }
     
