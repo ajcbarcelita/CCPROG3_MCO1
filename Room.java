@@ -33,24 +33,33 @@ public class Room {
         return reservationList.size();
     }
 
+    public ArrayList<Reservation> getReservationList() {
+        return reservationList;
+    }
+
+    public String getStatus(int index) {
+        return status[index];
+    }
+
     public void creationStatusOpen() {
         for (int i = 0; i < 31; i++) {
         status[i] = "X";
         }
     }
 
-    public Boolean checkRoomAvailability(Date checkInDate, Date checkOutDate) {
-        for (int i = checkInDate.getDay() - 1; i < checkOutDate.getDay() - 1; i++) {
-            if (status[checkInDate.getDay()-1] != "X") {
-                if (status[checkInDate.getDay()] != "X") {
-                    return false;
+    public Boolean checkRoomAvailability(int checkInDate, int checkOutDate) {
+        Boolean returns = true;
+        for (int i = checkInDate; i < checkOutDate - 1; i++) {
+            if (status[checkInDate-1] != "X") {
+                if (status[checkInDate] == "X") {
+                    returns = true;
                 }
             }
             if (status[i] != "X") {
-                return false;
+                returns = false;
             }
         }
-        return true;
+        return returns;
     }
 
     public Boolean isRoomEmpty() {
@@ -66,8 +75,9 @@ public class Room {
         status[index] = id;
     }
 
-    public String createReservation(String guestName, Date checkInDate, Date checkOutDate, Room roomBooked) {
-        String reservationID = (roomBooked.getRoomName() + rd.nextInt(10000));
+    public String createReservation(String guestName, int checkInDate, int checkOutDate, Room roomBooked) {
+        int idNum = rd.nextInt(9000) + 1000;
+        String reservationID = (roomBooked.getRoomName() + idNum);
         Reservation tempRes = new Reservation(guestName, checkInDate, checkOutDate, roomBooked, reservationID);
         tempRes.setRoomStatus();
         reservationList.add(tempRes);
@@ -86,5 +96,33 @@ public class Room {
         for (int i = 0; i < reservationList.size(); i++) {
             System.out.println((i+1)+ " Reservation ID: " + reservationList.get(i).getReservationID());
         }
+    }
+
+    public void displayRoomStatus() {
+        for (int i = 0; i < 31; i++) {
+            System.out.printf("%02d ", (i + 1));
+            if (status[i].equals("X")) {
+                System.out.print("X ");
+            } else {
+                System.out.print("B ");
+            }
+            if ((i + 1) % 7 == 0) {
+                System.out.println();
+            }
+        }
+        System.out.println();
+    }
+
+    public int findRes(String reservationID) {
+        for (int i = 0; i < getReservationAmount(); i++) {
+            if (reservationList.get(i).getReservationID().equalsIgnoreCase(reservationID)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public void removeReservation(String reservationID) {
+        reservationList.remove(findRes(reservationID));
     }
 }

@@ -24,7 +24,6 @@ public class Hotel {
         createRooms();
     }
 
-    //getter
     public String getHotelName() {
         return this.hotelName;
     }
@@ -74,13 +73,13 @@ public class Hotel {
         }
     }
 
-    public Room findRoom(String roomName) {
-        for (Room room : roomList) {
-            if (room.getRoomName().equals(roomName)) {
-                return room;
+    public int findRoom(String roomName) {
+        for (int i = 0; i < roomAmount; i++) {
+            if (getRoom(i).getRoomName().equalsIgnoreCase(roomName)) {
+                return i;
             }
         }
-        return null;
+        return -1;
     }
 
     public int getRoomAmount() {
@@ -89,6 +88,10 @@ public class Hotel {
 
     public Room getRoom(int index) {
         return roomList.get(index);
+    }
+
+    public double getRoomPrice() {
+        return roomPricePerNight;
     }
 
     public void setHotelName(String hotelName) {
@@ -111,7 +114,7 @@ public class Hotel {
         }
     }
 
-    public int AvailableRoomIndex(Date checkInDate, Date checkOutDate) {
+    public int AvailableRoomIndex(int checkInDate, int checkOutDate) {
         for (int i = 0; i < roomAmount; i++) {
             if(roomList.get(i).checkRoomAvailability(checkInDate, checkOutDate)) {
                 return i;
@@ -127,5 +130,40 @@ public class Hotel {
         }
 
         return total;
+    }
+
+    public void displayReservations() {
+        for (Room room : roomList) {
+            room.displayReservations();
+        }
+    }
+
+    public void displayRooms() {
+        for (Room room : roomList) {
+            System.out.println("Room Number: " + room.getRoomName());            
+        }
+    }
+    
+    public int findRes(String reservationID) {
+        for (int i = 0; i < roomAmount; i++) {
+            for (int j = 0; j < getRoom(i).getReservationAmount(); j++) {
+                if (getRoom(i).getReservationList().get(j).getReservationID().equalsIgnoreCase(reservationID)){
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    public int checkEmptyRooms(int day) {
+        int ctr = 0;
+        for (int i = 0; i < roomAmount; i++) {
+            if(roomList.get(i).getStatus(day-1).equalsIgnoreCase("X")) {
+                ctr++;
+            }
+        }
+
+        return ctr;
     }
 }
