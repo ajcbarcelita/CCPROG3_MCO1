@@ -1,8 +1,10 @@
 import java.util.*;
 
-/**
+ /**
  * HotelReservationSystem is a class that manages an arraylist of hotels and provides methods for creating, viewing, managing hotels and creating reservations.
- */
+ * 
+ * @version 26/06/24 - 4:30AM
+ */ 
 public class HotelReservationSystem {
     Scanner sc = new Scanner(System.in);
     private ArrayList<Hotel> hotelList;
