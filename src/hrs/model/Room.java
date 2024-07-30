@@ -1,10 +1,9 @@
+package src.hrs.model;
+
 import java.util.*;
 
-/**
-Represents a room in the hotel system.
-*/
 public class Room {
-    private Random rd = new Random();
+    private Random rd;
     private String roomName;
     private double roomPrice;
     private ArrayList<Reservation> reservationList; 
@@ -17,6 +16,7 @@ public class Room {
      * @param roomPrice the price of the room per night
      */
     public Room(String roomName, double roomPrice) {
+        this.rd = new Random();
         this.roomName = roomName;
         this.roomPrice = roomPrice;
         this.reservationList = new ArrayList<Reservation>();
@@ -171,33 +171,6 @@ public class Room {
             total += reservation.getTotalPrice();
         }
         return total;
-    }
-
-    /**
-     * Displays the reservations for the room
-     */
-    public void displayReservations() {
-        for (int i = 0; i < reservationList.size(); i++) {
-            System.out.println("Reservation ID: " + reservationList.get(i).getReservationID() +" Guest: " + reservationList.get(i).getGuestName());
-        }
-    }
-
-    /**
-     * Displays the status of the room for each day of the month.
-     */
-    public void displayRoomStatus() {
-        for (int i = 0; i < 31; i++) {
-            System.out.printf("%02d ", (i + 1));
-            if (status[i].equals("X")) {
-                System.out.print("X ");
-            } else {
-                System.out.print("B ");
-            }
-            if ((i + 1) % 7 == 0) {
-                System.out.println();
-            }
-        }
-        System.out.println();
     }
 
     /**
