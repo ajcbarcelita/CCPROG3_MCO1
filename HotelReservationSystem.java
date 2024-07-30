@@ -59,12 +59,11 @@ public class HotelReservationSystem {
      * This method prompts the user to enter the necessary information to create a new hotel, including:
      * <ul>
      * <li>Hotel name</li>
-     * <li>Room prefix</li>
      * <li>Initial room amount (between 1 and 50)</li>
      * <li>Optional: custom room price per night (at least 100.00)</li>
      * </ul>
      * 
-     * The method checks for duplicate hotel names and prefixes, and ensures that the user enters valid input for each field.
+     * The method checks for duplicate hotel names and ensures that the user enters valid input for each field.
      * 
      * Once the user has entered all the necessary information, a new Hotel object is created and added to the system.
      *
@@ -76,7 +75,6 @@ public class HotelReservationSystem {
     {
         String choice;
         String name;
-        String prefix;
         int amount = 0;
         double price = 0;
         boolean checkDuplicate = false;
@@ -92,19 +90,6 @@ public class HotelReservationSystem {
                 if(getHotel(i).getHotelName().equalsIgnoreCase(name)) {
                     checkDuplicate = true;
                     System.out.println("[!][!] Name is already taken [!][!]");
-                }
-            }
-            } while (checkDuplicate);
-
-            do{
-            checkDuplicate = false;
-            System.out.print("Enter a prefix for the rooms in the Hotel: ");
-            prefix = sc.nextLine();
-            
-            for(int i = 0; i < getHotelAmount(); i++) {
-                if(getHotel(i).getHotelPrefix().equalsIgnoreCase(prefix)) {
-                    checkDuplicate = true;
-                    System.out.println("[!][!] Prefix is already taken [!][!]");
                 }
             }
             } while (checkDuplicate);
@@ -144,10 +129,10 @@ public class HotelReservationSystem {
                         System.out.println("[!][!] Enter a valid price (at least 100.00) [!][!]");
                     }
                     } while(price < 100.00);
-                    tempHotel = new Hotel(name, amount, prefix, price);
+                    tempHotel = new Hotel(name, amount, price);
                 }
                 else {
-                    tempHotel = new Hotel(name, amount, prefix);
+                    tempHotel = new Hotel(name, amount);
                 }
             } while (!(choice.equalsIgnoreCase("no") || choice.equalsIgnoreCase("yes")));
 
@@ -179,6 +164,7 @@ public class HotelReservationSystem {
     private void viewHotel()
     {
         int choiceHotel = 0, choiceOption = 0;
+        int choiceDate = 0;
         System.out.println("--------------------------------------------------------------------------------");
         displayHotels();
         
@@ -220,13 +206,69 @@ public class HotelReservationSystem {
 
             switch(choiceOption) {
                 case 1: highLevelInformation(choiceHotel - 1); break;
-                case 2: getHotel(choiceHotel-1).lowLevelRoomAvailability(); break;
-                case 3: getHotel(choiceHotel-1).lowLevelRoomInformation(); break;
-                case 4: getHotel(choiceHotel-1).lowLevelReservationDetails(); break;
-                default:
-                System.out.println("Invalid Selection. Please Try Again.");
+                case 2:
+                    do{
+                        System.out.print("Select a date you would like to see availability of (#): ");
+                        if (sc.hasNextInt()) {
+                            choiceDate = sc.nextInt();
+                            sc.nextLine();
+                        } else {
+                            System.out.println("Invalid input. Please enter a valid number.");
+                            sc.next(); // discard invalid input
+                            continue; // skip to the next iteration
+                        }
+                    } while(choiceDate > 31 || choiceDate < 1);
+                    System.out.println("--------------------------------------------------------------------------------");
+                    System.out.println("\t Total Number of Rooms: " + getHotel(choiceHotel-1).getRoomAmount());
+                    System.out.println("\t Number of Rooms Empty on " + choiceDate + ": " + getHotel(choiceHotel-1).checkEmptyRooms(choiceDate));
+                    System.out.println("\t Number of Rooms Booked on " + choiceDate + ": "+ (getHotel(choiceHotel-1).getRoomAmount() - getHotel(choiceHotel-1).checkEmptyRooms(choiceDate)));
+                    System.out.println("--------------------------------------------------------------------------------");
+                    System.out.println("Press Enter to continue");
+                    sc.nextLine(); 
                 break;
-            }
+                case 3:
+                    String choiceRoom;
+                    int roomIndex = 0;
+                    System.out.println("--------------------------------------------------------------------------------");
+                    getHotel(choiceHotel-1).displayRooms();
+                    do{
+                        System.out.print("Select a Room Number you would like to view: ");
+                        choiceRoom = sc.nextLine();
+                        roomIndex = getHotel(choiceHotel-1).findRoom(choiceRoom);
+                    } while (roomIndex == -1);
+                    System.out.println("--------------------------------------------------------------------------------");
+                
+                    System.out.println("Room: " + getHotel(choiceHotel-1).getRoom(roomIndex).getRoomName() + "\tPrice per night: " + getHotel(choiceHotel-1).getRoomPrice());
+                    System.out.println("Room Availability: (B = Booked) (X = Available)");
+                    getHotel(choiceHotel-1).getRoom(roomIndex).displayRoomStatus();
+                    System.out.println("--------------------------------------------------------------------------------");
+                    System.out.println("Press Enter to continue");
+                    sc.nextLine();
+                    break;
+                case 4: 
+                    String resID;
+                    if(!getHotel(choiceHotel-1).isHotelEmpty()) {
+                        System.out.println("--------------------------------------------------------------------------------");
+                        getHotel(choiceHotel-1).displayReservations();
+                        System.out.println("--------------------------------------------------------------------------------");
+                        do{
+                            System.out.print("Select a reservation to view (ID): ");
+                            resID = sc.nextLine();
+                        } while (getHotel(choiceHotel-1).findRes(resID) == -1);
+                        System.out.println("--------------------------------------------------------------------------------");
+                        getHotel(choiceHotel-1).getRoom(getHotel(choiceHotel-1).findRes(resID)).getReservationList().get(getHotel(choiceHotel-1).getRoom(getHotel(choiceHotel-1).findRes(resID)).findRes(resID)).displayReservationDetails();
+                        System.out.println("--------------------------------------------------------------------------------");
+                    }
+                    else {
+                        System.out.println("There are no reservations to view");
+                    }
+                    System.out.println("Press Enter to continue");
+                    sc.nextLine();
+                break;
+                    default:
+                    System.out.println("Invalid Selection. Please Try Again.");
+                    break;
+                }
         } while (choiceOption < 1 || choiceOption > 4);
     }
     
@@ -256,6 +298,7 @@ public class HotelReservationSystem {
     {
         String name;
         int choiceHotel = 0, choiceOption = 0;
+        int amount = 0, ctr = 0;
         Boolean checkDuplicate;
         System.out.println("--------------------------------------------------------------------------------");
         displayHotels();
@@ -319,20 +362,122 @@ public class HotelReservationSystem {
                             break;
 
                             case 2: // add room
-                            getHotel(choiceHotel-1).addRooms();
+                            do{
+                                System.out.print("Enter the amount of rooms to add to the Hotel: ");
+                                if (sc.hasNextInt()) {
+                                    amount = sc.nextInt();
+                                    sc.nextLine();
+                                } else {
+                                    System.out.println("Invalid input. Please enter a valid number.");
+                                    sc.next(); // discard invalid input
+                                    continue; // skip to the next iteration
+                                }
+                                if (amount > 50 || amount < 1 || amount+getHotel(choiceHotel-1).getRoomAmount() > 50) {
+                                    System.out.println("[!][!] Too many rooms [!][!]");
+                                }
+                            } while (getHotel(choiceHotel-1).getRoomAmount() + amount > 50);
+                
+                            System.out.print("Type yes if you wish to continue, anything else to abort: ");
+                                if ("yes".equalsIgnoreCase(sc.nextLine())){
+                                    getHotel(choiceHotel-1).addRooms(amount);
+                                    System.out.println("Rooms have been added.");
+                                }
+                
+                                else{
+                                    System.out.println("Adding of rooms has been aborted.");
+                                }
+
+
                             break;
 
                             case 3: // remove room
-                            getHotel(choiceHotel-1).removeRooms();
+                            do{
+                                System.out.print("Enter the amount of rooms to remove from the Hotel (Empty Rooms: " + getHotel(choiceHotel-1).countEmptyRooms()+" rooms will be removed starting from the last room): ");
+                                if (sc.hasNextInt()) {
+                                    amount = sc.nextInt();
+                                    sc.nextLine();
+                                } 
+                                
+                                else {
+                                    System.out.println("Invalid input. Please enter a valid number.");
+                                    sc.next(); // discard invalid input
+                                    continue; // skip to the next iteration
+                                }
+
+                                if (amount > getHotel(choiceHotel-1).countEmptyRooms() || amount < 1 || getHotel(choiceHotel-1).countEmptyRooms()-amount<1) {
+                                    System.out.println("[!][!] Enter a valid room amount [!][!]");
+                                }
+                            } while (amount > getHotel(choiceHotel-1).countEmptyRooms() || amount < 1 || getHotel(choiceHotel-1).countEmptyRooms()-amount<1);
+                
+                            System.out.print("Type yes if you wish to continue, anything else to abort: ");
+                            if ("yes".equalsIgnoreCase(sc.nextLine())){
+                                for (int i = getHotel(choiceHotel-1).countEmptyRooms()-1; i >= 0 && ctr < amount; i--) {
+                                    getHotel(choiceHotel-1).removeRoom(i);
+                                }
+                                System.out.println("Rooms have been removed.");
+                            }
+                
+                            else{
+                                System.out.println("Removing of rooms has been aborted.");
+                            }
                             break;
 
                             case 4: // change PricePerNight
-                            getHotel(choiceHotel-1).changePricePerNight();
+                            if (getHotel(choiceHotel-1).isHotelEmpty() == true){
+                                do{
+                                    System.out.print("Enter the new price of the room per night: ");
+                                    if (sc.hasNextInt()) {
+                                        amount = sc.nextInt();
+                                        sc.nextLine();
+                                    } else {
+                                        System.out.println("Invalid input. Please enter a valid number.");
+                                        sc.next(); // discard invalid input
+                                        continue; // skip to the next iteration
+                                    }
+                                    if (amount < 100) {
+                                        System.out.println("[!][!] Enter a larger amount [!][!]");
+                                    }
+                                } while (amount < 100);
+                            
+                                System.out.print("Type yes if you wish to continue, anything else to abort: ");
+                                if ("yes".equalsIgnoreCase(sc.nextLine())){
+                                    getHotel(choiceHotel-1).setRoomPricePerNight(amount);
+                                    System.out.println("Room's price per night has been adjusted.");
+                                }
+                            
+                                else{
+                                    System.out.println("Price change aborted.");
+                                }
+                            }
+                            else{
+                                System.out.println("Hotel is not empty.");
+                            }
+                        
+                            System.out.println("Press Enter to continue");
+                            sc.nextLine();
                             break;
 
                             case 5: // remove reservation
-                            getHotel(choiceHotel-1).removeReservation();
+                            String resID;
+                            System.out.println("--------------------------------------------------------------------------------");
+                            getHotel(choiceHotel-1).displayReservations();
+                            do{
+                                System.out.println("--------------------------------------------------------------------------------");
+                                System.out.print("Select a reservation to remove (ID): ");
+                                resID = sc.nextLine();
+                            } while (getHotel(choiceHotel-1).findRes(resID) == -1);
+                        
+                            System.out.print("Type yes if you wish to continue, anything else to abort: ");
+                            if ("yes".equalsIgnoreCase(sc.nextLine())){
+                                getHotel(choiceHotel-1).removeReservation(resID);
+                                System.out.println("Reservation has been removed.");
+                            }
+                        
+                            else{
+                                System.out.println("Removing of Reservation has been aborted.");
+                            }
                             break; // come back to after making reservations
+
                             case 6: // remove Hotel
                             if (getHotel(choiceHotel - 1).isHotelEmpty() == true) {
                             System.out.print("Type yes if you wish to continue, anything else to abort: ");
@@ -381,6 +526,10 @@ public class HotelReservationSystem {
      */
     private void createReservation() {
         if (getHotelAmount() > 0){
+            int checkInDate = 0, checkOutDate = 0;
+            int roomIndex = 0;
+            String name;
+            Room roomBooked;
             int choiceHotel = 0;
 
             System.out.println("--------------------------------------------------------------------------------");
@@ -398,7 +547,51 @@ public class HotelReservationSystem {
                 }
             } while (choiceHotel > getHotelAmount() || choiceHotel <= 0);
             
-            getHotel(choiceHotel-1).createReservation();
+            System.out.print("Enter a name for the Reservation: ");
+            name = sc.nextLine();
+            System.out.println("--------------------------------------------------------------------------------");
+
+            do{
+                do {
+                    System.out.print("Enter your check-in date: ");
+                    if (sc.hasNextInt()) {
+                        checkInDate = sc.nextInt();
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid number.");
+                        sc.next(); // discard invalid input
+                        continue; // skip to the next iteration
+                    }
+                } while (checkInDate < 1 || checkInDate >= 31 );
+                
+                do {
+                    System.out.print("Enter your check-out date: ");
+                    if (sc.hasNextInt()) {
+                        checkOutDate = sc.nextInt();
+                        sc.nextLine();
+                    } else {
+                        System.out.println("Invalid input. Please enter a valid number.");
+                        sc.next(); // discard invalid input
+                        continue; // skip to the next iteration
+                    }
+                } while (checkOutDate <= 1 || checkOutDate > 31);
+
+                roomIndex = getHotel(choiceHotel-1).AvailableRoomIndex(checkInDate, checkOutDate);
+
+            } while ((checkInDate > checkOutDate) || roomIndex == -1);
+            
+            if(roomIndex == -1) {
+                System.out.println("No available rooms for the selected dates.");
+            }
+
+            else {
+                roomBooked = getHotel(choiceHotel-1).getRoom(roomIndex);
+                System.out.println("Reservation ID: " + getHotel(choiceHotel-1).getRoom(roomIndex).createReservation(name, checkInDate, checkOutDate, roomBooked));
+                System.out.println("Room Booked: "+ roomBooked.getRoomName());
+                System.out.println("--------------------------------------------------------------------------------");
+                System.out.println("Press Enter to continue");
+                sc.nextLine();
+            };
 
         }
         else {
