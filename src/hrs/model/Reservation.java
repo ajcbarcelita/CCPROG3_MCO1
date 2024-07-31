@@ -11,6 +11,10 @@ public class Reservation {
     private Room roomBooked;
     private double totalPrice;
     private double PricePerNight;
+    private String discountCode;
+    private double discountPercentage;
+    private boolean isValidDiscount;
+
 
     /**
      * Creates a new Reservation given guest name, check-in and check-out dates, roomBooked, and a reservationID.
@@ -21,7 +25,7 @@ public class Reservation {
      * @param RoomBooked
      * @param reservationID
      */
-    public Reservation(String guestName, int checkInDate, int checkOutDate, Room RoomBooked, String reservationID) {
+    public Reservation(String guestName, int checkInDate, int checkOutDate, Room RoomBooked, String reservationID, String discountCode) {
         this.guestName = guestName;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
@@ -29,6 +33,9 @@ public class Reservation {
         this.reservationID = reservationID;
         this.PricePerNight = roomBooked.getRoomPrice();
         this.totalPrice = calculateTotalPrice();
+        this.discountCode = discountCode;
+        this.discountPercentage = isDiscountCodeValid(discountCode);
+        this.isValidDiscount = isConditionMet(discountCode);
     }
 
     /**
@@ -92,6 +99,9 @@ public class Reservation {
     public double getTotalPrice() {
         return totalPrice;
     }
+    public boolean getIsValidDiscount() {
+        return isValidDiscount;
+    }
 
     /**
      * Calculates the total price of the reservation based on the number of nights stayed.
@@ -100,15 +110,45 @@ public class Reservation {
      */
     public double calculateTotalPrice() {
         int days = (checkOutDate - checkInDate);
-        return days * PricePerNight;
+        double totalPrice = days * PricePerNight;
+
+        if (this.discountCode.equals("STAY4_GET1") && isConditionMet(this.discountCode)) {
+            totalPrice -= PricePerNight;
+        }
+
+        double discountAmount = totalPrice * discountPercentage;
+        return totalPrice - discountAmount;
     } 
 
-    /**
-     * Sets the room status to booked for the duration of the reservation.
-     */
     public void setRoomStatus() {
         for (int i = checkInDate - 1; i <= checkOutDate - 1;i++ ) {
             roomBooked.setRoomAvailability(i, reservationID);
         }
+    }
+
+    private double isDiscountCodeValid(String discountCode) {
+        switch (discountCode) {
+            case "I_WORK_HERE":
+                return 0.10;
+            case "STAY4_GET1":
+                return 0.00; //special condition to be checked again in isConditionMet
+            case "PAYDAY":
+                return 0.07;
+        }
+
+        return 0.0;
+    }
+
+    public boolean isConditionMet(String discountCode) {
+        switch (discountCode) {
+            case "I_WORK_HERE":
+                return true;
+            case "STAY4_GET1":
+                int dayRange = checkOutDate - checkInDate;
+                return dayRange >= 5;
+            case "PAYDAY":
+                return (checkInDate <= 15 && checkOutDate > 15) || (checkInDate <= 30 && checkOutDate > 30);
+        }
+        return false;
     }
 }

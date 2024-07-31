@@ -148,12 +148,12 @@ public class Room {
      * @param roomBooked the room being booked
      * @return the reservation ID
      */
-    public String createReservation(String guestName, int checkInDate, int checkOutDate, Room roomBooked) {
+    public String createReservation(String guestName, int checkInDate, int checkOutDate, Room roomBooked, String discountCode) {
         int idNum = rd.nextInt(9000) + 1000;
         String reservationID = (roomBooked.getRoomName() + idNum);
         
         if (checkInDate < checkOutDate) {
-            Reservation tempRes = new Reservation(guestName, checkInDate, checkOutDate, roomBooked, reservationID);
+            Reservation tempRes = new Reservation(guestName, checkInDate, checkOutDate, roomBooked, reservationID, discountCode);
             tempRes.setRoomStatus();
             reservationList.add(tempRes);
             return reservationID;
