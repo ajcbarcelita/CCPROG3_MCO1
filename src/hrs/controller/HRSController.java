@@ -438,7 +438,7 @@ public class HRSController {
                 if (HRSController.getHotelAmount() > 0){
                     int checkInDate = 0, checkOutDate = 0;
                     int roomIndex = 0;
-                    String nameRes;
+                    String nameRes, discountCode;
                     Room roomBooked;
                             
                     System.out.println("--------------------------------------------------------------------------------");
@@ -494,14 +494,20 @@ public class HRSController {
                     }
                 
                     else {
+                        do {
+                            System.out.print("Enter a discount code (exit if none): ");
+                            discountCode = sc.nextLine();
+                        } while (!discountCode.equalsIgnoreCase("exit"));
+                        
                         roomBooked = hotelController.getRoom(roomIndex);
-                        System.out.println("Reservation ID: " + hotelController.getRoom(roomIndex).createReservation(nameRes, checkInDate, checkOutDate, roomBooked));
+                        System.out.println("Reservation ID: " + hotelController.getRoom(roomIndex).createReservation(nameRes, checkInDate, checkOutDate, roomBooked, discountCode));
                         System.out.println("Room Booked: "+ roomBooked.getRoomName());
                         System.out.println("--------------------------------------------------------------------------------");
                         System.out.println("Press Enter to continue");
                         sc.nextLine();
                     };
                 }
+
                 else {
                     System.out.println("No hotels have been created yet.");
                 }
