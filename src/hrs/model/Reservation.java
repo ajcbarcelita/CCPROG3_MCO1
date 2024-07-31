@@ -1,9 +1,7 @@
 package src.hrs.model;
 
-/**
- * Represents a reservation in the hotel system.
- */ 
 public class Reservation {
+    private Hotel hotel;
     private String reservationID;
     private String guestName;
     private int checkInDate;
@@ -15,17 +13,8 @@ public class Reservation {
     private double discountPercentage;
     private boolean isValidDiscount;
 
-
-    /**
-     * Creates a new Reservation given guest name, check-in and check-out dates, roomBooked, and a reservationID.
-     * 
-     * @param guestName
-     * @param checkInDate
-     * @param checkOutDate
-     * @param RoomBooked
-     * @param reservationID
-     */
-    public Reservation(String guestName, int checkInDate, int checkOutDate, Room RoomBooked, String reservationID, String discountCode) {
+    public Reservation(Hotel hotel, String guestName, int checkInDate, int checkOutDate, Room RoomBooked, String reservationID, String discountCode) {
+        this.hotel = hotel;
         this.guestName = guestName;
         this.checkInDate = checkInDate;
         this.checkOutDate = checkOutDate;
@@ -38,79 +27,44 @@ public class Reservation {
         this.isValidDiscount = isConditionMet(discountCode);
     }
 
-    /**
-     * Returns the unique ID of the reservation.
-     * 
-     * @return the reservation ID
-     */
     public String getReservationID() {
         return reservationID;
     }
 
-    /**
-     * Returns the name of the guest making the reservation.
-     * 
-     * @return the guest name
-     */
     public String getGuestName() {
         return guestName;
     }
 
-    /**
-     * Returns the check-in date of the reservation.
-     * 
-     * @return the check-in date
-     */
     public int getCheckInDate() {
         return checkInDate;
     }
 
-    /**
-     * Returns the check-out date of the reservation.
-     * 
-     * @return the check-out date
-     */
     public int getCheckOutDate() {
         return checkOutDate;
     }
 
-    /**
-     * Returns the price per night of the room.
-     * 
-     * @return the price per night
-     */
     public double getPricePerNight() {
         return PricePerNight;
     }
 
-    /**
-     * Returns the room booked for the reservation.
-     * 
-     * @return the room booked
-     */
     public Room getRoomBooked() {
         return roomBooked;
     }
 
-    /**
-     * Returns the total price of the reservation.
-     * 
-     * @return the total price */
     public double getTotalPrice() {
         return totalPrice;
     }
+
     public boolean getIsValidDiscount() {
         return isValidDiscount;
     }
 
-    /**
-     * Calculates the total price of the reservation based on the number of nights stayed.
-     * 
-     * @return the total price
-     */
     public double calculateTotalPrice() {
-        int days = (checkOutDate - checkInDate);
-        double totalPrice = days * PricePerNight;
+        double totalPrice = 0.0;
+        for (int day = checkInDate; day < checkOutDate; day++) {
+            double modifier = hotel.getPriceModifier(day);
+            totalPrice += (PricePerNight * modifier);
+        }
 
         if (this.discountCode.equals("STAY4_GET1") && isConditionMet(this.discountCode)) {
             totalPrice -= PricePerNight;

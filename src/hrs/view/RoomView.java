@@ -5,11 +5,7 @@ import src.hrs.model.Room;
 import src.hrs.model.Reservation;
 
 public class RoomView {
-    
-    
-    /**
-     * Displays the reservations for the room
-     */
+
     public void displayReservations(Room room) {
         ArrayList<Reservation> reservationList = room.getReservationList();
         for (int i = 0; i < reservationList.size(); i++) {
@@ -17,9 +13,6 @@ public class RoomView {
         }
     }
 
-    /**
-     * Displays the status of the room for each day of the month.
-     */
     public void displayRoomStatus(Room room) {
         for (int i = 0; i < 31; i++) {
             System.out.printf("%02d ", (i + 1));

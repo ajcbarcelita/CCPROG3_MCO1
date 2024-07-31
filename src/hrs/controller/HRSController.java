@@ -308,7 +308,7 @@ public class HRSController {
                                 
                                             System.out.print("Type yes if you wish to continue, anything else to abort: ");
                                                 if ("yes".equalsIgnoreCase(sc.nextLine())){
-                                                    hotelController.addRooms(amount);
+                                                    hotelController.addRoom(amount);
                                                     System.out.println("Rooms have been added.");
                                                 }
                                 
@@ -438,7 +438,7 @@ public class HRSController {
                 if (HRSController.getHotelAmount() > 0){
                     int checkInDate = 0, checkOutDate = 0;
                     int roomIndex = 0;
-                    String nameRes, discountCode;
+                    String nameRes, discountCode = "";
                     Room roomBooked;
                             
                     System.out.println("--------------------------------------------------------------------------------");
@@ -484,21 +484,16 @@ public class HRSController {
                                 continue; // skip to the next iteration
                             }
                         } while (checkOutDate <= 1 || checkOutDate > 31);
-                    
+                        
+                        System.out.print("Enter a discount code (if any): ");
+                        discountCode = sc.nextLine();
                         roomIndex = hotelController.AvailableRoomIndex(checkInDate, checkOutDate);
                     
                     } while ((checkInDate > checkOutDate) || roomIndex == -1);
 
                     if(roomIndex == -1) {
                         System.out.println("No available rooms for the selected dates.");
-                    }
-                
-                    else {
-                        do {
-                            System.out.print("Enter a discount code (exit if none): ");
-                            discountCode = sc.nextLine();
-                        } while (!discountCode.equalsIgnoreCase("exit"));
-                        
+                    } else {
                         roomBooked = hotelController.getRoom(roomIndex);
                         System.out.println("Reservation ID: " + hotelController.getRoom(roomIndex).createReservation(nameRes, checkInDate, checkOutDate, roomBooked, discountCode));
                         System.out.println("Room Booked: "+ roomBooked.getRoomName());
@@ -507,7 +502,6 @@ public class HRSController {
                         sc.nextLine();
                     };
                 }
-
                 else {
                     System.out.println("No hotels have been created yet.");
                 }

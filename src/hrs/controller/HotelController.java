@@ -21,7 +21,7 @@ public class HotelController {
         return hotel.getHotelName();
     }
 
-    public void addRooms(int amount) {
+    public void addRoom(int amount) {
         hotel.addRooms(amount);
     }
 

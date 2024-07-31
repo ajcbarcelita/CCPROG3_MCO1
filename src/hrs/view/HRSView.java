@@ -12,11 +12,6 @@ public class HRSView {
         }
     }
 
-    /**
-     * Displays high-level information about a Hotel, including its name, Room amount, and Estimated Earnings for the Month.
-     * 
-     * @param hotelIndex the index of the hotel to display information for
-     */
     public void highLevelInformation(Hotel hotel)
     {
         System.out.println("--------------------------------------------------------------------------------");

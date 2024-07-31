@@ -3,10 +3,6 @@ package src.hrs.view;
 import src.hrs.model.Reservation;
 
 public class ReservationView {
-
-    /**
-     * Displays the details of the reservation.
-     */
     public void displayReservationDetails(Reservation reservation) {
         System.out.println("\tReservation ID: " + reservation.getReservationID());
         System.out.println("\tGuest Name: " + reservation.getGuestName());

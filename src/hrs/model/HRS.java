@@ -38,6 +38,4 @@ public class HRS {
         Hotel tempHotel = new Hotel(hotelName, roomAmount, roomPrice);
         addHotel(tempHotel);
     }
-
-    
 }
